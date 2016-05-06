@@ -20,9 +20,9 @@ public class Extraction {
     static String schema = "http://mindmaps.io/";
     Graph graph;
     QueryBuilder qb;
-    Set<String> conceptNames = new HashSet<>();
-    Map<String,Map<String,String>> conceptsIID = new HashMap<>();
-    Map<String,Map<String,Long>> conceptsDegree = new HashMap<>();
+    public Set<String> conceptNames = new HashSet<>();
+    public Map<String,Map<String,String>> conceptsIID = new HashMap<>();
+    public Map<String,Map<String,Long>> conceptsDegree = new HashMap<>();
 
     public Extraction() {
         graph = MindmapsGraphFactory.buildNewTransaction(graphConf);
@@ -56,9 +56,6 @@ public class Extraction {
         }
 
         getDegrees();
-
-//        conceptsIID.get("location").forEach((a,b) -> System.out.println(a + b));
-//        conceptsDegree.get("location").forEach((a,b)-> System.out.println(a + b));
     }
 
     private void getDegrees() {
