@@ -56,6 +56,11 @@ public class Extraction {
         }
 
         getDegrees();
+
+        for (String s : conceptNames) {
+            System.out.println(s);
+            System.out.println(conceptsIID.get(s).size());
+        }
     }
 
     private void getDegrees() {

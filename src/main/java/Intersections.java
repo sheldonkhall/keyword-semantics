@@ -24,25 +24,35 @@ public class Intersections {
                 System.out.println("computing intersects of: "+l);
                 Iterator<String> it = l.iterator();
                 Set<String> current = new HashSet<String>(extraction.conceptsIID.get(it.next()).keySet());
-                Set<String> clashes = null;
-                while (it.hasNext()) {
-                    clashes = new HashSet<String>(extraction.conceptsIID.get(it.next()).keySet());
-                    current.retainAll(clashes);
-                }
-
-                // Write the clashes to a file
-                BufferedWriter output;
-                try {
-                    File file = new File(l.toString()+".txt");
-                    output = new BufferedWriter(new FileWriter(file));
-                    for (String line : clashes) {
-                        output.write(line+"\n");
+                Set<String> clashes = new HashSet<>();
+                if (current.size()>0) {
+                    while (it.hasNext()) {
+                        clashes = new HashSet<String>(extraction.conceptsIID.get(it.next()).keySet());
+                        System.out.println("current: " + current.size());
+                        System.out.println("clashes: " + clashes.size());
+                        current.retainAll(clashes);
                     }
-                    output.close();
-                } catch ( IOException e ) {
-                    e.printStackTrace();
                 }
 
+                System.out.println("clashes");
+                System.out.println(current.size());
+
+                // Check if file is empty
+                if (current.size()>0) {
+
+                    // Write the clashes to a file
+                    BufferedWriter output;
+                    try {
+                        File file = new File(l.toString() + ".txt");
+                        output = new BufferedWriter(new FileWriter(file));
+                        for (String line : current) {
+                            output.write(line + "\n");
+                        }
+                        output.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
 
