@@ -1,5 +1,6 @@
 import io.mindmaps.graph.config.MindmapsGraphFactory;
 import io.mindmaps.graql.api.query.QueryBuilder;
+import io.mindmaps.graql.api.query.Result;
 import io.mindmaps.graql.api.query.SelectQuery;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
@@ -31,11 +32,11 @@ public class Extraction {
     public void execute () {
         // add concept types
         conceptNames.add("keyword");
-//        conceptNames.add("location");
-//        conceptNames.add("genre");
-//        conceptNames.add("mood");
-//        conceptNames.add("person");
-//        conceptNames.add("company");
+        conceptNames.add("location");
+        conceptNames.add("genre");
+        conceptNames.add("mood");
+        conceptNames.add("person");
+        conceptNames.add("company");
 
         // collect keywords
         for (String s : conceptNames) {
@@ -43,24 +44,29 @@ public class Extraction {
             SelectQuery query = qb.select("x").where(var("x").isa(s));
 
             // clean strings and place as keys in map
-            query.forEach(
-                    result -> conceptsIID.get(s).put(
+            for (Map<String,Result> result : query) {
+
+                // ignore null values
+                if (result.get("x").getValue().isPresent()) {
+                    conceptsIID.get(s).put(
                             result.get("x").getValue().get().toString().trim().replaceAll("\u00A0", "").toLowerCase(),
-                            result.get("x").getId().get()));
+                            result.get("x").getId().get());
+                }
+            }
         }
 
         getDegrees();
 
-//        conceptsIID.get("keyword").forEach((a,b) -> System.out.println(a + b));
-        conceptsDegree.get("keyword").forEach((a,b)-> System.out.println(a + b));
-        System.out.println(conceptsIID.get("keyword").get("snowboarding competition"));
+//        conceptsIID.get("location").forEach((a,b) -> System.out.println(a + b));
+//        conceptsDegree.get("location").forEach((a,b)-> System.out.println(a + b));
     }
 
     private void getDegrees() {
         for (String s : conceptNames) {
             conceptsDegree.put(s,new HashMap<String,Long>());
             conceptsIID.get(s).forEach(
-                    (a, b) -> conceptsDegree.get(s).put(a, ((long) graph.traversal().V().has("ITEM_IDENTIFIER",b).values("DEGREE").next())));
+                    (a, b) -> conceptsDegree.get(s).put(a,
+                            ((long) graph.traversal().V().has("ITEM_IDENTIFIER",b).values("DEGREE").next())));
         }
     }
 }
