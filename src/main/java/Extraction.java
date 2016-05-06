@@ -55,6 +55,7 @@ public class Extraction {
             }
         }
 
+        // Fetch the degrees using Mindmaps Core until graql can
         getDegrees();
 
         for (String s : conceptNames) {

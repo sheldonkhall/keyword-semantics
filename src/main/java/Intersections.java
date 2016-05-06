@@ -19,18 +19,19 @@ public class Intersections {
 
     public void execute() {
         LinkedList<LinkedList<String>> combinations = BinPowSet(new LinkedList<String>(extraction.conceptNames));
+
+        // loop through all possible combinations of concept types
         for (LinkedList<String> l : combinations) {
             if (l.size() > 1) {
                 System.out.println("computing intersects of: "+l);
+
+                // compute intersections
                 Iterator<String> it = l.iterator();
                 Set<String> current = new HashSet<String>(extraction.conceptsIID.get(it.next()).keySet());
-                Set<String> clashes = new HashSet<>();
                 if (current.size()>0) {
                     while (it.hasNext()) {
-                        clashes = new HashSet<String>(extraction.conceptsIID.get(it.next()).keySet());
+                        current.retainAll(extraction.conceptsIID.get(it.next()).keySet());
                         System.out.println("current: " + current.size());
-                        System.out.println("clashes: " + clashes.size());
-                        current.retainAll(clashes);
                     }
                 }
 
