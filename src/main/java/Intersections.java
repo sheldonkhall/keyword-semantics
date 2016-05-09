@@ -2,6 +2,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -42,10 +45,17 @@ public class Intersections {
                 if (current.size()>0) {
 
                     // Write the clashes to a file
-                    BufferedWriter output;
+                    Path path = Paths.get("clashes/" + l.toString() + ".txt");
+                    Path dirPath = Paths.get("clashes");
                     try {
-                        File file = new File(l.toString() + ".txt");
-                        output = new BufferedWriter(new FileWriter(file));
+                        if (!Files.exists(dirPath)) {
+                            Files.createDirectory(dirPath);
+                            Files.createFile(path);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try (BufferedWriter output = Files.newBufferedWriter(path)) {
                         for (String line : current) {
                             output.write(line + "\n");
                         }
