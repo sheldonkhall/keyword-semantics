@@ -130,7 +130,7 @@ public class Extraction {
                     }
                     b.forEach(c -> {
                         try {
-                            writer.write(", " + b);
+                            writer.write(";" + b);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -164,7 +164,7 @@ public class Extraction {
                         e.printStackTrace();
                     }
                     try {
-                        writer.write(", " + b);
+                        writer.write(";" + b);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
