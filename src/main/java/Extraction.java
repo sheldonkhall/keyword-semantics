@@ -21,7 +21,7 @@ import static io.mindmaps.graql.api.query.QueryBuilder.var;
  */
 
 public class Extraction {
-    static String graphConf = "/opt/mindmaps/resources/conf/titan-cassandra-server-es.properties";
+    static String graphConf = "/opt/mindmaps/resources/conf/titan-cassandra-es.properties";
     static String schema = "http://mindmaps.io/";
     Graph graph;
     QueryBuilder qb;
